@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2a75bb" />
+    <title>Pokémon Bank — Acciones</title>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <style>
+      :root{
+        --primary:#e3350d;        /* rojo poké */
+        --secondary:#2a75bb;      /* azul poké */
+        --bg:#f7f9fc;
+      }
+      html{ scroll-behavior:smooth; scroll-padding-top:80px; }
+      body{ background:var(--bg); }
+      .navbar{ box-shadow:0 4px 16px rgba(0,0,0,.06); }
+      .badge-pill{ font-weight:600; }
+      .card{ border:0; border-radius:1rem; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+      .card h5{ font-weight:700; }
+      .btn-primary{ background:var(--primary); border-color:var(--primary); }
+      .btn-outline-primary{ color:var(--primary); border-color:var(--primary); }
+      .btn-outline-primary:hover{ background:var(--primary); color:#fff; }
+      .section-title{ font-weight:800; color:#263238; }
+      .muted{ color:#6c757d; }
+      .pill{ background:#eef4ff; color:#2a75bb; border-radius:999px; padding:.2rem .6rem; font-size:.85rem; }
+      .quickbar{ position:sticky; top:10px; z-index:1020; }
+
+      /* Botones de navegación destacados (Historial / Gráfico) */
+      .btn-nav{
+        border:2px solid var(--secondary);
+        color:var(--secondary);
+        background:#fff;
+        box-shadow:0 8px 18px rgba(42,117,187,.12);
+        font-weight:700;
+      }
+      .btn-nav:hover{
+        background:var(--secondary);
+        color:#fff;
+        transform:translateY(-1px);
+      }
+
+      /* Accesos rápidos centrados */
+      .quick-actions{
+        display:flex; flex-wrap:wrap; justify-content:center; align-items:center;
+        margin:-4px;
+      }
+      .quick-actions .btn{
+        margin:4px;
+        padding:.6rem 1rem;
+        min-width:160px;
+      }
+      @media (min-width: 992px){
+        .quick-actions{ flex-wrap:nowrap; }
+        .quick-actions .btn{
+          min-width:0;
+          flex:1 1 0;
+          text-align:center;
+        }
+      }
+
+      /* Alineación/centrado de las 4 tarjetas inferiores */
+      .col-action{ display:flex; }
+      .col-action .card{ width:100%; }
+    </style>
+  </head>
+  <body>
+    <!-- Topbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container">
+        <a class="navbar-brand font-weight-bold d-flex align-items-center" href="#" aria-current="page" style="color:var(--secondary)">
+          <img src="assets/pokebank.png" alt="Pokémon Bank" height="40" class="mr-2"/>
+          Pokémon Bank <span class="sr-only">(actual)</span>
+        </a>
+        <ul class="navbar-nav ml-auto align-items-center">
+          <li class="nav-item mr-3">
+            <span class="pill">Cuenta: <strong>0012-3456-78</strong></span>
+          </li>
+          <li class="nav-item mr-3">
+            <span class="muted">Titular:</span> <strong>Ash Ketchum</strong>
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="btn btn-outline-primary">Salir</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main id="top" class="container py-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <h2 class="section-title mb-2 mb-sm-0">Acciones</h2>
+        <div class="text-right">
+          <a href="historial.html" class="btn btn-nav mr-2">Historial</a>
+          <a href="grafico.html" class="btn btn-nav">Gráfico</a>
+        </div>
+      </div>
+
+      <!-- Resumen + Accesos rápidos -->
+      <div class="row mb-4 align-items-stretch justify-content-center">
+        <div class="col-12 col-lg-4 mb-3 d-flex">
+          <div class="card p-3 h-100 w-100">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="text-muted mb-1">Saldo actual</h6>
+              <span class="badge badge-pill badge-primary">USD</span>
+            </div>
+            <h3 class="mb-0" id="saldoLabel">$ 0.00</h3>
+            <small class="text-muted">*Vista ilustrativa (sin lógica aún)</small>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-8 mb-3 d-flex">
+          <div class="card p-3 h-100 w-100 quickbar">
+            <h6 class="text-muted mb-2">Accesos rápidos</h6>
+            <div class="quick-actions">
+              <button class="btn btn-primary" data-toggle="modal" data-target="#modalDeposito">Depositar</button>
+              <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modalRetiro">Retirar</button>
+              <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modalConsulta">Consultar saldo</button>
+              <button class="btn btn-outline-primary" data-toggle="modal" data-target="#modalPago">Pagar servicios</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuatro opciones visibles en la pantalla principal -->
+      <div class="row justify-content-center">
+        <!-- Depositar -->
+        <div class="col-12 col-lg-6 mb-4 col-action">
+          <div class="card p-4 h-100 w-100">
+            <h5 class="mb-3">Depositar</h5>
+            <form>
+              <div class="form-group">
+                <label for="montoDeposito_static">Monto</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="number" min="0.01" step="0.01" class="form-control" id="montoDeposito_static"
+                         aria-describedby="ayudaDepositoStatic" placeholder="0.00" required />
+                </div>
+                <small id="ayudaDepositoStatic" class="text-muted">Usa punto para decimales. Mínimo $0.01.</small>
+              </div>
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalDeposito">Confirmar depósito</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Retirar -->
+        <div class="col-12 col-lg-6 mb-4 col-action">
+          <div class="card p-4 h-100 w-100">
+            <h5 class="mb-3">Retirar</h5>
+            <form>
+              <div class="form-group">
+                <label for="montoRetiro_static">Monto</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="number" min="0.01" step="0.01" class="form-control" id="montoRetiro_static"
+                         aria-describedby="ayudaRetiroStatic" placeholder="0.00" required />
+                </div>
+                <small id="ayudaRetiroStatic" class="text-muted d-block mt-1">El monto no puede exceder el saldo disponible.</small>
+              </div>
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalRetiro">Confirmar retiro</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Consultar saldo -->
+        <div class="col-12 col-lg-6 mb-4 col-action">
+          <div class="card p-4 h-100 w-100">
+            <h5 class="mb-3">Consulta de saldo</h5>
+            <p class="text-muted mb-3">Aquí podrás ver tu saldo actualizado y los últimos movimientos.</p>
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalConsulta">Ver saldo</button>
+          </div>
+        </div>
+
+        <!-- Pagar servicios -->
+        <div class="col-12 col-lg-6 mb-4 col-action">
+          <div class="card p-4 h-100 w-100">
+            <h5 class="mb-3">Pago de servicios</h5>
+            <form>
+              <div class="form-group">
+                <label for="tipoServicio_static">Servicio</label>
+                <select id="tipoServicio_static" class="form-control" required>
+                  <option value="" selected disabled>Selecciona un servicio</option>
+                  <option value="energia">Energía eléctrica</option>
+                  <option value="internet">Internet</option>
+                  <option value="telefonia">Telefonía</option>
+                  <option value="agua">Agua potable</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cuentaContrato_static">Número NPE / Referencia</label>
+                <input type="text" id="cuentaContrato_static" class="form-control"
+                       inputmode="numeric" pattern="\d{6,20}" placeholder="Ej. 001234567890" required />
+                <small class="text-muted">Solo dígitos, 6–20 caracteres.</small>
+              </div>
+              <div class="form-group">
+                <label for="montoPago_static">Monto</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="number" min="0.01" step="0.01" class="form-control" id="montoPago_static"
+                         aria-describedby="ayudaPagoStatic" placeholder="0.00" required />
+                </div>
+                <small id="ayudaPagoStatic" class="text-muted">Mínimo $0.01.</small>
+              </div>
+              <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalPago">Pagar servicio</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODALES -->
+
+    <!-- Modal: Depositar -->
+    <div class="modal fade" id="modalDeposito" tabindex="-1" role="dialog" aria-labelledby="titleDeposito" aria-modal="true" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 rounded-lg">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titleDeposito">Depositar</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" title="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="formDeposito">
+              <div class="form-group">
+                <label for="montoDeposito">Monto</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="number" min="0.01" step="0.01" class="form-control" id="montoDeposito"
+                         aria-describedby="ayudaDeposito" placeholder="0.00" required>
+                </div>
+                <small id="ayudaDeposito" class="text-muted">Usa punto para decimales. Mínimo $0.01.</small>
+              </div>
+              <button type="button" class="btn btn-primary btn-block">Confirmar depósito</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Retirar -->
+    <div class="modal fade" id="modalRetiro" tabindex="-1" role="dialog" aria-labelledby="titleRetiro" aria-modal="true" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 rounded-lg">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titleRetiro">Retirar</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" title="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="formRetiro">
+              <div class="form-group">
+                <label for="montoRetiro">Monto</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="number" min="0.01" step="0.01" class="form-control" id="montoRetiro"
+                         aria-describedby="ayudaRetiro" placeholder="0.00" required>
+                </div>
+                <small id="ayudaRetiro" class="text-muted d-block mt-1">El monto no puede exceder el saldo disponible.</small>
+              </div>
+              <button type="button" class="btn btn-primary btn-block">Confirmar retiro</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Consultar saldo -->
+    <div class="modal fade" id="modalConsulta" tabindex="-1" role="dialog" aria-labelledby="titleConsulta" aria-modal="true" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 rounded-lg">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titleConsulta">Consulta de saldo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" title="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted">Tu saldo actual es:</p>
+            <h3 class="mb-3" id="saldoLabelModal">$ 0.00</h3>
+            <button type="button" class="btn btn-outline-primary btn-block" data-dismiss="modal" onclick="window.location.href='historial.html'">Ver últimos movimientos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Pagar servicios -->
+    <div class="modal fade" id="modalPago" tabindex="-1" role="dialog" aria-labelledby="titlePago" aria-modal="true" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 rounded-lg">
+          <div class="modal-header">
+            <h5 class="modal-title" id="titlePago">Pago de servicios</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" title="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="formPago">
+              <div class="form-group">
+                <label for="tipoServicio">Servicio</label>
+                <select id="tipoServicio" class="form-control" required>
+                  <option value="" selected disabled>Selecciona un servicio</option>
+                  <option value="energia">Energía eléctrica</option>
+                  <option value="internet">Internet</option>
+                  <option value="telefonia">Telefonía</option>
+                  <option value="agua">Agua potable</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cuentaContrato">Número NPE / Referencia</label>
+                <input type="text" id="cuentaContrato" class="form-control"
+                       inputmode="numeric" pattern="\d{6,20}" placeholder="Ej. 001234567890" required>
+                <small class="text-muted">Solo dígitos, 6–20 caracteres.</small>
+              </div>
+              <div class="form-group">
+                <label for="montoPago">Monto</label>
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="number" min="0.01" step="0.01" class="form-control" id="montoPago"
+                         aria-describedby="ayudaPago" placeholder="0.00" required>
+                </div>
+                <small id="ayudaPago" class="text-muted">Mínimo $0.01.</small>
+              </div>
+              <button type="button" class="btn btn-primary btn-block">Pagar servicio</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts (Bootstrap; sin lógica aún) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+
+

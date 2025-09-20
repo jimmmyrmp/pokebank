@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Bank - Log in</title>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+       <link rel="stylesheet" href="css/styles.css" />
+    <style>
+    :root{
+        --primary:#e3350d;        /* rojo poké */
+        --secondary:#2a75bb;      /* azul poké */
+        --bg:#f7f9fc;
+      }
+      body{
+        background: radial-gradient(1200px 600px at 50% -200px, rgba(42,117,187,.15), transparent 60%) var(--bg);
+        min-height:100vh;
+        display:flex; align-items:center; justify-content:center;
+      }
+      .brand{
+        font-weight:800; letter-spacing:.5px; color:var(--secondary);
+      }
+      .card{
+        border:0; border-radius:1rem; box-shadow: 0 12px 30px rgba(0,0,0,.10);
+      }
+      .btn-primary{
+        background:var(--primary); border-color:var(--primary);
+      }
+      .btn-primary:hover{ filter:brightness(.95); }
+      .pin-input{
+        letter-spacing:.35em; text-align:center; font-size:1.25rem; padding:.75rem 1rem;
+      }
+      .footer-links a{ color:#6c757d; font-size:.9rem; }
+    </style>
+</head>
+<body>
+      <main class="container">
+      <div class="row justify-content-center">
+        <div class="col-11 col-sm-8 col-md-6 col-lg-4">
+          <div class="text-center mb-4">
+            <img src="assets/pokebank.png" alt="Pokémon Bank" height="100" class="img-fluid" />
+            <h1 class="brand mt-3">Pokémon Bank</h1>
+            <p class="text-muted mb-0">Simulador de ATM</p>
+          </div>
+
+          <div class="card p-4">
+            <h5 class="mb-3 text-center">Iniciar sesión</h5>
+            <form action="acciones.html" method="get" autocomplete="off">
+              <div class="form-group">
+                <label for="pin">PIN (4 dígitos)</label>
+                <input id="pin" name="pin" type="password" inputmode="numeric" pattern="\\d{4}"
+                  maxlength="4" class="form-control pin-input" placeholder="••••" required />
+                <small class="form-text text-muted">Solo números. No compartas tu PIN.</small>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            </form>
+          </div>
+
+          <div class="text-center mt-3 footer-links">
+            <a href="#" onclick="return false;">Términos</a> ·
+            <a href="#" onclick="return false;">Privacidad</a>
+          </div>
+        </div>
+      </div>
+    </main>
+</body>
+</html>
