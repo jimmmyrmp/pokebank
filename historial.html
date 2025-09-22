@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#2a75bb" />
+  <title>Pokémon Bank — Historial</title>
+
+  <!-- Bootstrap  4 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    :root{
+      --primary:#e3350d;       
+      --secondary:#2a75bb;    
+      --bg:#f7f9fc;
+    }
+    body{ background:var(--bg); }
+    .navbar{ box-shadow:0 4px 16px rgba(0,0,0,.06); }
+    .section-title{ font-weight:800; color:#263238; }
+    .btn-primary{ background:var(--primary); border-color:var(--primary); }
+    .btn-outline-primary{ color:var(--primary); border-color:var(--primary); }
+    .btn-outline-primary:hover{ background:var(--primary); color:#fff; }
+    .pill{ background:#eef4ff; color:#2a75bb; border-radius:999px; padding:.2rem .6rem; font-size:.85rem; }
+    .money-pos{ color:#1b8a3b; font-weight:600; }
+    .money-neg{ color:#b42318; font-weight:600; }
+    .table thead th{ white-space:nowrap; }
+    .filters .form-control{ min-width:180px; }
+
+    /*para impresión (PDF con Ctrl+P) */
+    @media print{
+      .navbar, .filters, .btn, a[href] { display:none !important; }
+      body{ background:#fff; }
+      .card { border:0; box-shadow:none; }
+      .table { font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+      <a class="navbar-brand font-weight-bold d-flex align-items-center" href="#" style="color:var(--secondary)">
+        <img src="assets/pokebank.png" alt="Pokémon Bank" height="40" class="mr-2"/>
+        Pokémon Bank
+      </a>
+      <ul class="navbar-nav ml-auto align-items-center">
+        <li class="nav-item mr-3">
+          <a class="btn btn-outline-primary" href="acciones.html">Acciones</a>
+        </li>
+        <li class="nav-item mr-3">
+          <a class="btn btn-outline-primary" href="grafico.html">Gráfico</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="index.html">Salir</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+      <h2 class="section-title mb-2 mb-sm-0">Historial de movimientos</h2>
+      <span class="pill">Cuenta: <strong>0012-3456-78</strong></span>
+    </div>
+
+    <!-- filtros -->
+    <div class="filters card p-3 mb-3">
+      <div class="form-row align-items-end">
+        <div class="col-sm-4 mb-2">
+          <label class="mb-1">Filtrar por tipo</label>
+          <select class="form-control" disabled>
+            <option>Todos</option>
+            <option>Depósito</option>
+            <option>Retiro</option>
+            <option>Pago</option>
+            <option>Consulta</option>
+            <option>Ajuste</option>
+          </select>
+        </div>
+        <div class="col-sm-5 mb-2">
+          <label class="mb-1">Buscar por texto</label>
+          <input type="text" class="form-control" placeholder="Descripción, referencia, etc." disabled>
+        </div>
+        <div class="col-sm-3 mb-2 text-sm-right">
+          <button class="btn btn-outline-primary btn-block" disabled>Exportar a PDF</button>
+          <small class="text-muted d-block mt-2">Para PDF usa <strong>Ctrl+P</strong>.</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- tabla -->
+    <div class="card p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo</th>
+              <th>Descripción / Referencia</th>
+              <th class="text-right">Monto</th>
+              <th class="text-right">Saldo resultante</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-09-01 09:12</td>
+              <td>Deposito</td>
+              <td>Depósito en ventanilla #1234</td>
+              <td class="text-right money-pos">$ 250.00</td>
+              <td class="text-right font-weight-bold">$ 250.00</td>
+            </tr>
+            <tr>
+              <td>2025-09-02 13:40</td>
+              <td>Pago</td>
+              <td>Pago energía eléctrica NPE 000112233</td>
+              <td class="text-right money-neg">- $ 35.75</td>
+              <td class="text-right font-weight-bold">$ 214.25</td>
+            </tr>
+            <tr>
+              <td>2025-09-03 08:02</td>
+              <td>Consulta</td>
+              <td>Consulta de saldo en ATM</td>
+              <td class="text-right">$ 0.00</td>
+              <td class="text-right font-weight-bold">$ 214.25</td>
+            </tr>
+            <tr>
+              <td>2025-09-04 17:21</td>
+              <td>Retiro</td>
+              <td>Retiro ATM Sucursal Centro</td>
+              <td class="text-right money-neg">- $ 60.00</td>
+              <td class="text-right font-weight-bold">$ 154.25</td>
+            </tr>
+            <tr>
+              <td>2025-09-05 10:05</td>
+              <td>Deposito</td>
+              <td>Depósito transferencia #AB-7788</td>
+              <td class="text-right money-pos">$ 100.00</td>
+              <td class="text-right font-weight-bold">$ 254.25</td>
+            </tr>
+            <tr>
+              <td>2025-09-06 19:33</td>
+              <td>Pago</td>
+              <td>Internet REF 991122</td>
+              <td class="text-right money-neg">- $ 30.00</td>
+              <td class="text-right font-weight-bold">$ 224.25</td>
+            </tr>
+            <tr>
+              <td>2025-09-07 11:15</td>
+              <td>Ajuste</td>
+              <td>Ajuste por redondeo</td>
+              <td class="text-right money-pos">$ 0.05</td>
+              <td class="text-right font-weight-bold">$ 224.30</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  </body>
+</html>
