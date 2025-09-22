@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#2a75bb" />
   <title>Pokémon Bank — Historial</title>
 
-  <!-- Bootstrap  4 -->
+  <!-- Bootstrap 4 -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/style.css" />
 
@@ -71,22 +71,21 @@
       <div class="form-row align-items-end">
         <div class="col-sm-4 mb-2">
           <label class="mb-1">Filtrar por tipo</label>
-          <select class="form-control" disabled>
-            <option>Todos</option>
-            <option>Depósito</option>
-            <option>Retiro</option>
-            <option>Pago</option>
-            <option>Consulta</option>
-            <option>Ajuste</option>
+          <select id="type" class="form-control">
+            <option value="all">Todos</option>
+            <option value="deposito">Depósito</option>
+            <option value="retiro">Retiro</option>
+            <option value="pago">Pago</option>
+            <option value="consulta">Consulta</option>
+            <option value="ajuste">Ajuste</option>
           </select>
         </div>
         <div class="col-sm-5 mb-2">
           <label class="mb-1">Buscar por texto</label>
-          <input type="text" class="form-control" placeholder="Descripción, referencia, etc." disabled>
+          <input id="q" type="text" class="form-control" placeholder="Descripción, referencia, etc.">
         </div>
-        <div class="col-sm-3 mb-2 text-sm-right">
-          <button class="btn btn-outline-primary btn-block" disabled>Exportar a PDF</button>
-          <small class="text-muted d-block mt-2">Para PDF usa <strong>Ctrl+P</strong>.</small>
+        <div class="col-sm-3 mb-2 d-flex justify-content-sm-end align-items-end">
+          <button id="btnPrint" class="btn btn-outline-primary">Exportar a PDF</button>
         </div>
       </div>
     </div>
@@ -94,7 +93,7 @@
     <!-- tabla -->
     <div class="card p-0">
       <div class="table-responsive">
-        <table class="table table-hover mb-0">
+        <table id="tbl" class="table table-hover mb-0">
           <thead class="thead-light">
             <tr>
               <th>Fecha</th>
@@ -160,5 +159,43 @@
     </div>
   </main>
 
+  <script>
+    (function () {
+      const $q = document.getElementById('q');
+      const $type = document.getElementById('type');
+      const $rows = Array.from(document.querySelectorAll('#tbl tbody tr'));
+      const $print = document.getElementById('btnPrint');
+
+      const norm = s => (s || '')
+        .toString()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quita acentos
+        .toLowerCase().trim();
+
+      function applyFilter() {
+        const t = $type.value;                 
+        const txt = norm($q.value);
+
+        $rows.forEach(r => {
+          const typeCell = norm(r.children[1].textContent); 
+          const rowText  = norm(r.textContent);
+
+          const okType = (t === 'all') || (typeCell === t);
+          const okText = !txt || rowText.includes(txt);
+          r.style.display = (okType && okText) ? '' : 'none';
+        });
+      }
+
+      $q.addEventListener('input', applyFilter);
+      $type.addEventListener('change', applyFilter);
+
+      $print.addEventListener('click', () => window.print());
+
+      applyFilter();
+    })();
+  </script>
+</body>
+</html>
+
   </body>
 </html>
+
