@@ -1,0 +1,5 @@
+.grafico {
+  max-width: 300px;   /* Ancho máximo */
+  max-height: 300px;  /* Alto máximo */
+  margin: 0 auto;     /* Centrado */
+}

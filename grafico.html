@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2a75bb" />
+    <title>Pokémon Bank — Acciones</title>
+
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style_acciones.css" />
+    <link rel="stylesheet" href="css/style_grafico.css" />
+
+
+  </head>
+  <body>
+    <!-- Topbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container">
+        <a class="navbar-brand font-weight-bold d-flex align-items-center" href="#" aria-current="page" style="color:var(--secondary)">
+          <img src="assets/pokebank.png" alt="Pokémon Bank" height="40" class="mr-2"/>
+          Pokémon Bank <span class="sr-only">(actual)</span>
+        </a>
+        <ul class="navbar-nav ml-auto align-items-center">
+          <li class="nav-item mr-3">
+            <span class="pill">Cuenta: <strong>0012-3456-78</strong></span>
+          </li>
+          <li class="nav-item mr-3">
+            <span class="muted">Titular:</span> <strong>Ash Ketchum</strong>
+          </li>
+          <li class="nav-item">
+            <a href="index.html" class="btn btn-outline-primary">Salir</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main id="top" class="container py-4">
+      <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <h2 class="section-title mb-2 mb-sm-0">Gráfico</h2>
+        <div class="text-right">
+          <a href="acciones.html" class="btn btn-nav mr-2">Acciones</a>
+          <a href="historial.html" class="btn btn-nav">Historial</a>
+        </div>
+      </div>
+
+      <!-- Gráfico -->
+        <div class="card shadow-sm p-4 text-center">
+            <canvas id="graficoTransacciones" class="grafico"></canvas>
+        </div>
+
+    </main>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Datos de ejemplo
+      const depositos = 1000;     // Total depósitos
+      const retiros = 300;        // Retiros hechos
+      const pagos = 200;          // Pagos de servicios
+      const saldoDisponible = depositos - (retiros + pagos);
+
+      const ctx = document.getElementById('graficoTransacciones').getContext('2d');
+      const grafico = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Retiros', 'Pagos de Servicios', 'Saldo Disponible'],
+          datasets: [{
+            data: [retiros, pagos, saldoDisponible],
+            backgroundColor: ['#F44336', '#FF9800', '#4CAF50']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let total = retiros + pagos + saldoDisponible;
+                  let value = context.parsed;
+                  let porcentaje = ((value / total) * 100).toFixed(1);
+                  return `${context.label}: $${value} (${porcentaje}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
