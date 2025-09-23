@@ -5,8 +5,8 @@ Interfaz web (Front-End: **HTML + CSS/Bootstrap 4**) para simular un cajero auto
 ## ✅ Estado
 - `index.html` (Login por PIN — maquetado)
 - `acciones.html` (Depósito, Retiro, Consulta de saldo, Pago de servicios — maquetado con modales)
-- `historial.html` (pendiente de maquetar)
-- `grafico.html` (pendiente de maquetar)
+- `historial.html` (historial transacciones)
+- `grafico.html` (graficos transacciones)
 
 ## 🗂️ Estructura
 pokemon-bank/
